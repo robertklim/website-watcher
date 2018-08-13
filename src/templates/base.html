@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% include 'snippets/css.html' %}
+    <title>Website Watcher</title>
+</head>
+<body>
+    <div class="grid-container">
+        <div class="grid-header">
+            <h3>Website Watcher <i class="material-icons">thumb_up_alt</i></h3>
+        </div>
+        <div class="grid-main">
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+    {% include 'snippets/css.html' %}
+</body>
+</html>
