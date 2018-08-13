@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <ul>
+        {% for obj in object_list %}
+            <li>{{ obj.name }} - url: {{ obj.url }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}
