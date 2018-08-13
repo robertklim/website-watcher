@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    
+    <h4>List view</h4>
     <ul>
         {% for obj in object_list %}
             <li>{{ obj.name }} - url: {{ obj.url }}</li>
