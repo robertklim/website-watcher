@@ -2,9 +2,24 @@
 
 {% block content %}
 
-    <h4>Detail view</h4>
-    <p>{{ objects.name }}</p>
-    <p>{{ object.url }}</p>
-    <p>{{ object.description }}</p>
+    <div class="card horizontal">
+        <div class="card-stacked">
+            <div class="card-content">
+                <h5>{{ object.name }}</h5>
+                <p>Url: {{ object.url }}</p>
+                <p>Description: {{ object.description }}</p>
+            </div>
+            <div class="card-action">
+                <a href="{{ object.get_absolute_url }}/update/" class="waves-effect waves-light btn">
+                    Edit
+                    <i class="material-icons left">edit</i>
+                </a>
+                <a href="{{ object.get_absolute_url }}/delete/" class="waves-effect waves-light btn red">
+                    Delete
+                    <i class="material-icons left">delete</i>
+                </a>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}
