@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView, 
     DeleteView, 
@@ -20,7 +21,7 @@ class WebsiteDetailView(DetailView):
 class WebsiteCreateView(CreateView):
     form_class = WebsiteCreateForm
     template_name = 'websites/website_create.html'
-    success_url = '../'
+    success_url = reverse_lazy('websites:website-list')
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -37,4 +38,4 @@ class WebsiteUpdateView(UpdateView):
 
 class WebsiteDeleteView(DeleteView):
     model = Website
-    success_url = '../../'
+    success_url = reverse_lazy('websites:website-list')
