@@ -1,5 +1,11 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import (
+    CreateView, 
+    DeleteView, 
+    DetailView, 
+    ListView, 
+    UpdateView,
+)
 from .forms import WebsiteCreateForm
 from .models import Website
 
@@ -28,3 +34,7 @@ class WebsiteUpdateView(UpdateView):
 
     def get_queryset(self):
         return Website.objects.filter(user=self.request.user)
+
+class WebsiteDeleteView(DeleteView):
+    model = Website
+    success_url = '../../'
