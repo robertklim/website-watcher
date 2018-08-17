@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from .forms import WebsiteCreateForm
 from .models import Website
 
@@ -21,3 +21,10 @@ class WebsiteCreateView(CreateView):
         # Now I can customize form
         instance.user = self.request.user
         return super(WebsiteCreateView, self).form_valid(form)
+
+class WebsiteUpdateView(UpdateView):
+    form_class = WebsiteCreateForm
+    template_name = 'websites/website_update.html'
+
+    def get_queryset(self):
+        return Website.objects.filter(user=self.request.user)
