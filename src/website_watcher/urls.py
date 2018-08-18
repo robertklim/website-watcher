@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('websites/', include('websites.urls', namespace='websites')),
+    path('watcher/', include('watcher.urls', namespace='watcher')),
 ]
