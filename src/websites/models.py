@@ -9,8 +9,8 @@ class Website(models.Model):
     name        = models.CharField(max_length=128)
     url         = models.CharField(max_length=2000)
     description = models.CharField(max_length=1024)
-    timestamp   = models.DateField(auto_now_add=True)
-    updated     = models.DateField(auto_now=True)
+    timestamp   = models.DateTimeField(auto_now_add=True)
+    updated     = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name

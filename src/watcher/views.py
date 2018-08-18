@@ -17,11 +17,21 @@ def check_website(request, website_pk):
     
     website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
 
+    try:
+        last_check = Check.objects.filter(website_url=website_url).latest()
+    except Check.DoesNotExist:
+        last_check = None
+
+    if last_check is not None:
+        result = 'ok' if last_check.website_hash == website_hash else 'err'
+    else:
+        result = 'first check'
+
     Check.objects.create(
         website = website,
         website_url = website_url,
         website_hash = website_hash,
-        result = 'ok',
+        result = result,
     ).save()
 
     return render(request, 'home.html', {})
