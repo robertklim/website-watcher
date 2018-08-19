@@ -8,6 +8,13 @@ from .models import Check
 import hashlib
 import requests
 
+def check_user_websites(request):
+    user = request.user
+    websites = Website.objects.filter(user=user)
+    for website in websites:
+        check_website(request, website.pk)
+    return render(request, 'home.html', {})
+
 def check_website(request, website_pk):
     website = Website.objects.get(pk=website_pk)
     website_url = website.url
