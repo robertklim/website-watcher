@@ -22,6 +22,11 @@
         {% endfor %}
     </ul>
 
+    <a href="{% url 'websites:website-create' %}" class="waves-effect waves-light btn">
+        Add Website
+        <i class="material-icons left">add_circle</i>
+    </a>
+
     <a href="{% url 'watcher:watcher-check-user-websites' %}" class="waves-effect waves-light btn">
         Check All Websites
         <i class="material-icons left">refresh</i>
