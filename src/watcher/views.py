@@ -18,19 +18,27 @@ def check_user_websites(request):
 def check_website(request, website_pk):
     website = Website.objects.get(pk=website_pk)
     website_url = website.url
+    try:
+        source = requests.get(website_url).text
+    except requests.exceptions.RequestException as e:
+        print(e)
+        source = None
     
-    source = requests.get(website_url).text
-    soup = BeautifulSoup(source, 'lxml')
-    
-    website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
+    if source is not None:
+        soup = BeautifulSoup(source, 'lxml')
+        website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
+    else:
+        website_hash = ''
 
     try:
         last_check = Check.objects.filter(website_url=website_url).latest()
     except Check.DoesNotExist:
         last_check = None
 
-    if last_check is not None:
+    if last_check is not None and website_hash != '':
         result = 'ok' if last_check.website_hash == website_hash else 'err'
+    elif website_hash == '':
+        result = 'con err'
     else:
         result = 'first check'
 
