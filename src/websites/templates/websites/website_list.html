@@ -9,6 +9,9 @@
         {% for obj in object_list %}
             <li class="collection-item">
                 <a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
+                <a href="{% url 'watcher:watcher-check' website_pk=obj.pk %}" class="secondary-content">
+                    <i class="material-icons">refresh</i>
+                </a>
                 <a href="{{ obj.get_absolute_url }}/delete/" class="secondary-content">
                     <i class="material-icons">delete</i>
                 </a>
@@ -18,5 +21,10 @@
             </li>
         {% endfor %}
     </ul>
+
+    <a href="{% url 'watcher:watcher-check-user-websites' %}" class="waves-effect waves-light btn">
+        Check All Websites
+        <i class="material-icons left">refresh</i>
+    </a>
 
 {% endblock content %}

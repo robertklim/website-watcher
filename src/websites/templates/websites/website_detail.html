@@ -10,6 +10,10 @@
                 <p>Description: {{ object.description }}</p>
             </div>
             <div class="card-action">
+                <a href="{% url 'watcher:watcher-check' website_pk=object.pk %}" class="waves-effect waves-light btn">
+                    Run Check
+                    <i class="material-icons left">refresh</i>
+                </a>
                 <a href="{{ object.get_absolute_url }}/update/" class="waves-effect waves-light btn">
                     Edit
                     <i class="material-icons left">edit</i>

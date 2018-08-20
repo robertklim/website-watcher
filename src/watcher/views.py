@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from websites.models import Website
 
@@ -13,7 +13,7 @@ def check_user_websites(request):
     websites = Website.objects.filter(user=user)
     for website in websites:
         check_website(request, website.pk)
-    return render(request, 'home.html', {})
+    return redirect('/websites')
 
 def check_website(request, website_pk):
     website = Website.objects.get(pk=website_pk)
@@ -41,6 +41,6 @@ def check_website(request, website_pk):
         result = result,
     ).save()
 
-    return render(request, 'home.html', {})
+    return redirect('/websites')
 
 
