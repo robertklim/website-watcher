@@ -18,6 +18,11 @@
                 <a href="{{ obj.get_absolute_url }}/update/" class="secondary-content">
                     <i class="material-icons">edit</i>
                 </a>
+                {% if obj.checks.latest.result == 'ok' %}
+                    <i class="material-icons">done</i>
+                {% else %}
+                    <i class="material-icons">error_outline</i>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
