@@ -23,6 +23,9 @@ class Website(models.Model):
 class WebsiteCheckSettings(models.Model):
     website         = models.ForeignKey(Website, on_delete=models.CASCADE)
     website_hash    = models.CharField(max_length=128)
-    dom_exclusions  = TaggableManager()
+    dom_exclusions  = TaggableManager(blank=True)
     timestamp       = models.DateTimeField(auto_now_add=True)
     updated         = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.website.name + ' settings'

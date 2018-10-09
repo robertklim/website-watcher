@@ -1,5 +1,12 @@
 from django.db import models
-from websites.models import Website
+from websites.models import Website, WebsiteCheckSettings
+
+CHECK_RESULTS = (
+    ('OK', 'Ok'),
+    ('ALERT', 'Alert'),
+    ('ERROR', 'Error'),
+    (None, 'None'),
+)
 
 class Check(models.Model):
     website         = models.ForeignKey(Website, on_delete=models.CASCADE, related_name='checks')
@@ -10,6 +17,20 @@ class Check(models.Model):
 
     def __str__(self):
         return self.website_url
+
+    class Meta:
+        get_latest_by = 'timestamp'
+        ordering = ['-timestamp']
+
+class WebsiteCheck(models.Model):
+    website_settings    = models.ForeignKey(WebsiteCheckSettings, on_delete=models.CASCADE, related_name='website_checks')
+    check_hash          = models.CharField(max_length=128)
+    result              = models.CharField(max_length=128, choices=CHECK_RESULTS, blank=True)
+    error               = models.CharField(max_length=128, blank=True)
+    timestamp           = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.website_settings.website.name + ' check'
 
     class Meta:
         get_latest_by = 'timestamp'
