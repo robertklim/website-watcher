@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card horizontal">
+    <div class="card-stacked">
+        <div class="card-content">
+            <h5>Website settings detail</h5>
+            Name: <a href="">{{ object.website }}</a><br>
+            Hash: {{ object.website_hash }}<br>
+            DOM exclusions: {{ object.dom_exclusions.names }}
+        </div>
+        <div class="card-action">
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

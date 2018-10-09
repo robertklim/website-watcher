@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView, 
@@ -13,6 +13,10 @@ from .models import Website, WebsiteCheckSettings
 class WebsiteCheckSettingsListView(ListView):
     def get_queryset(self):
         return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('pk'))
+
+class WebsiteCheckSettingsDetailView(DetailView):
+    def get_object(self):
+        return get_object_or_404(WebsiteCheckSettings, pk=self.kwargs.get('website_settings_pk'))
 
 class WebsiteListView(ListView):
     def get_queryset(self):
