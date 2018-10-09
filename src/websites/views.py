@@ -8,7 +8,11 @@ from django.views.generic import (
     UpdateView,
 )
 from .forms import WebsiteCreateForm
-from .models import Website
+from .models import Website, WebsiteCheckSettings
+
+class WebsiteCheckSettingsListView(ListView):
+    def get_queryset(self):
+        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('pk'))
 
 class WebsiteListView(ListView):
     def get_queryset(self):
