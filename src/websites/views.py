@@ -28,6 +28,15 @@ class WebsiteCheckSettingsCreateView(CreateView):
         instance.website = Website.objects.get(pk=self.kwargs.get('pk'))
         return super(WebsiteCheckSettingsCreateView, self).form_valid(form)
 
+class WebsiteCheckSettingsDeleteView(DeleteView):
+    model = WebsiteCheckSettings
+    pk_url_kwarg = 'website_settings_pk'
+    # success_url = reverse_lazy('websites:website-list')
+
+    def get_success_url(self):
+        website_pk = self.object.website.pk
+        return reverse_lazy('websites:website-settings-list', kwargs={'pk': website_pk})
+
 class WebsiteListView(ListView):
     def get_queryset(self):
         if self.request.user.is_authenticated:
