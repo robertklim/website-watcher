@@ -20,7 +20,9 @@ class WebsiteCheckSettingsDetailView(DetailView):
 
 class WebsiteListView(ListView):
     def get_queryset(self):
-        return Website.objects.filter(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return Website.objects.filter(user=self.request.user)
+        return Website.objects.none()
 
 class WebsiteDetailView(DetailView):
     def get_queryset(self):
