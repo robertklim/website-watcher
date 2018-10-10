@@ -1,5 +1,5 @@
 from django import forms
-from .models import Website
+from .models import Website, WebsiteCheckSettings
 
 class WebsiteCreateForm(forms.ModelForm):
     class Meta:
@@ -8,4 +8,11 @@ class WebsiteCreateForm(forms.ModelForm):
             'name',
             'url',
             'description',
+        ]
+
+class WebsiteCheckSettingsCreateForm(forms.ModelForm):
+    class Meta:
+        model = WebsiteCheckSettings
+        fields = [
+            'dom_exclusions',
         ]

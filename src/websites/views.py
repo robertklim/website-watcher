@@ -7,7 +7,7 @@ from django.views.generic import (
     ListView, 
     UpdateView,
 )
-from .forms import WebsiteCreateForm
+from .forms import WebsiteCreateForm, WebsiteCheckSettingsCreateForm
 from .models import Website, WebsiteCheckSettings
 
 class WebsiteCheckSettingsListView(ListView):
@@ -17,6 +17,16 @@ class WebsiteCheckSettingsListView(ListView):
 class WebsiteCheckSettingsDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(WebsiteCheckSettings, pk=self.kwargs.get('website_settings_pk'))
+
+class WebsiteCheckSettingsCreateView(CreateView):
+    form_class = WebsiteCheckSettingsCreateForm
+    template_name = 'websites/websitechecksettings_create.html'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        # Now I can customize form
+        instance.website = Website.objects.get(pk=self.kwargs.get('pk'))
+        return super(WebsiteCheckSettingsCreateView, self).form_valid(form)
 
 class WebsiteListView(ListView):
     def get_queryset(self):
@@ -31,7 +41,7 @@ class WebsiteDetailView(DetailView):
 class WebsiteCreateView(CreateView):
     form_class = WebsiteCreateForm
     template_name = 'websites/website_create.html'
-    success_url = reverse_lazy('websites:website-list')
+    # success_url = reverse_lazy('websites:website-list')
 
     def form_valid(self, form):
         instance = form.save(commit=False)

@@ -29,3 +29,7 @@ class WebsiteCheckSettings(models.Model):
 
     def __str__(self):
         return self.website.name + ' settings'
+
+    def get_absolute_url(self):
+        website_check_settings = WebsiteCheckSettings.objects.get(pk=self.pk)
+        return reverse('websites:website-settings-detail', kwargs={'pk': website_check_settings.website.pk, 'website_settings_pk': self.pk})
