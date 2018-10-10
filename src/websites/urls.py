@@ -9,6 +9,7 @@ from .views import (
     WebsiteCheckSettingsDeleteView,
     WebsiteCheckSettingsDetailView,
     WebsiteCheckSettingsListView,
+    WebsiteCheckSettingsUpdateView,
 )
 
 app_name = 'websites'
@@ -21,6 +22,7 @@ urlpatterns = [
     path('create/', WebsiteCreateView.as_view(), name='website-create'),
     path('<int:pk>/settings/', WebsiteCheckSettingsListView.as_view(), name='website-settings-list'),
     path('<int:pk>/settings/<int:website_settings_pk>/', WebsiteCheckSettingsDetailView.as_view(), name='website-settings-detail'),
+    path('<int:pk>/settings/<int:website_settings_pk>/update/', WebsiteCheckSettingsUpdateView.as_view(), name='website-settings-update'),
     path('<int:pk>/settings/<int:website_settings_pk>/delete/', WebsiteCheckSettingsDeleteView.as_view(), name='website-settings-delete'),
     path('<int:pk>/settings/create/', WebsiteCheckSettingsCreateView.as_view(), name='website-settings-create'),
 ]

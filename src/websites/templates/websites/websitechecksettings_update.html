@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="btn-large waves-effect waves-light left">
+        <i class="material-icons left">save_alt</i>
+        SAVE
+    </button>
+</form>
+
+{% endblock content %}

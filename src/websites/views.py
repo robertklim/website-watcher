@@ -28,6 +28,14 @@ class WebsiteCheckSettingsCreateView(CreateView):
         instance.website = Website.objects.get(pk=self.kwargs.get('pk'))
         return super(WebsiteCheckSettingsCreateView, self).form_valid(form)
 
+class WebsiteCheckSettingsUpdateView(UpdateView):
+    form_class = WebsiteCheckSettingsCreateForm
+    template_name = 'websites/websitechecksettings_update.html'
+    pk_url_kwarg = 'website_settings_pk'
+
+    def get_queryset(self):
+        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('pk'))
+
 class WebsiteCheckSettingsDeleteView(DeleteView):
     model = WebsiteCheckSettings
     pk_url_kwarg = 'website_settings_pk'
