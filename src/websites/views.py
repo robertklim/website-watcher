@@ -11,8 +11,9 @@ from .forms import WebsiteCreateForm, WebsiteCheckSettingsCreateForm
 from .models import Website, WebsiteCheckSettings
 
 class WebsiteCheckSettingsListView(ListView):
+    pk_url_kwargs = 'website_pk'
     def get_queryset(self):
-        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('pk'))
+        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
 
 class WebsiteCheckSettingsDetailView(DetailView):
     def get_object(self):
@@ -21,11 +22,12 @@ class WebsiteCheckSettingsDetailView(DetailView):
 class WebsiteCheckSettingsCreateView(CreateView):
     form_class = WebsiteCheckSettingsCreateForm
     template_name = 'websites/websitechecksettings_create.html'
+    pk_url_kwargs = 'website_pk'
 
     def form_valid(self, form):
         instance = form.save(commit=False)
         # Now I can customize form
-        instance.website = Website.objects.get(pk=self.kwargs.get('pk'))
+        instance.website = Website.objects.get(pk=self.kwargs.get('website_pk'))
         return super(WebsiteCheckSettingsCreateView, self).form_valid(form)
 
 class WebsiteCheckSettingsUpdateView(UpdateView):
@@ -34,7 +36,7 @@ class WebsiteCheckSettingsUpdateView(UpdateView):
     pk_url_kwarg = 'website_settings_pk'
 
     def get_queryset(self):
-        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('pk'))
+        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
 
 class WebsiteCheckSettingsDeleteView(DeleteView):
     model = WebsiteCheckSettings
@@ -43,7 +45,7 @@ class WebsiteCheckSettingsDeleteView(DeleteView):
 
     def get_success_url(self):
         website_pk = self.object.website.pk
-        return reverse_lazy('websites:website-settings-list', kwargs={'pk': website_pk})
+        return reverse_lazy('websites:website-settings-list', kwargs={'website_pk': website_pk})
 
 class WebsiteListView(ListView):
     def get_queryset(self):
