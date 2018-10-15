@@ -15,6 +15,11 @@ class WebsiteCheckSettingsListView(ListView):
     def get_queryset(self):
         return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['website_pk'] = self.kwargs.get('website_pk')
+        return context
+
 class WebsiteCheckSettingsDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(WebsiteCheckSettings, pk=self.kwargs.get('website_settings_pk'))

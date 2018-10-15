@@ -8,11 +8,16 @@
     </li>
     {% for obj in object_list %}
     <li class="collection-item">
-        Name: <a href="">{{ obj.website }}</a><br>
+        Name: <a href="{% url 'websites:website-settings-detail' website_pk=obj.website.pk website_settings_pk=obj.pk %}">{{ obj.website }}</a><br>
         Hash: {{ obj.website_hash }}<br>
         DOM exclusions: {{ obj.dom_exclusions.names }}
     </li>
     {% endfor %}
 </ul>
+
+<a href="{% url 'websites:website-settings-create' website_pk=website_pk %}" class="waves-effect waves-light btn">
+    Add Settings
+    <i class="material-icons left">add_circle</i>
+</a>
 
 {% endblock content %}
