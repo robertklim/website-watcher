@@ -1,40 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
-    <ul class="collection with-header">
-        <li class="collection-header">
-            <h4>Websites:</h4>
-        </li>
-        {% for obj in object_list %}
-            <li class="collection-item">
-                <a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
-                <a href="{% url 'watcher:watcher-check' website_pk=obj.pk %}" class="secondary-content">
-                    <i class="material-icons">refresh</i>
-                </a>
-                <a href="{{ obj.get_absolute_url }}/delete/" class="secondary-content">
-                    <i class="material-icons">delete</i>
-                </a>
-                <a href="{{ obj.get_absolute_url }}/update/" class="secondary-content">
-                    <i class="material-icons">edit</i>
-                </a>
-                {% if obj.checks.latest.result == 'ok' %}
-                    <i class="material-icons">done</i>
-                {% else %}
-                    <i class="material-icons">error_outline</i>
-                {% endif %}
+    {% if user.is_authenticated %}
+        <ul class="collection with-header">
+            <li class="collection-header">
+                <h4>Websites:</h4>
             </li>
-        {% endfor %}
-    </ul>
+            {% for obj in object_list %}
+                <li class="collection-item">
+                    <a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
+                    <a href="{% url 'watcher:watcher-check' website_pk=obj.pk %}" class="secondary-content">
+                        <i class="material-icons">refresh</i>
+                    </a>
+                    <a href="{{ obj.get_absolute_url }}delete/" class="secondary-content">
+                        <i class="material-icons">delete</i>
+                    </a>
+                    <a href="{{ obj.get_absolute_url }}edit/" class="secondary-content">
+                        <i class="material-icons">edit</i>
+                    </a>
+                    {% if obj.checks.latest.result == 'ok' %}
+                        <i class="material-icons">done</i>
+                    {% else %}
+                        <i class="material-icons">error_outline</i>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
 
-    <a href="{% url 'websites:website-create' %}" class="waves-effect waves-light btn">
-        Add Website
-        <i class="material-icons left">add_circle</i>
-    </a>
-
-    <a href="{% url 'watcher:watcher-check-user-websites' %}" class="waves-effect waves-light btn">
-        Check All Websites
-        <i class="material-icons left">refresh</i>
-    </a>
+        <a href="{% url 'websites:website-create' %}" class="waves-effect waves-light btn">
+            Add Website
+            <i class="material-icons left">add_circle</i>
+        </a>
+        <a href="{% url 'watcher:watcher-check-user-websites' %}" class="waves-effect waves-light btn">
+            Check All Websites
+            <i class="material-icons left">refresh</i>
+        </a>
+    {% else %}
+        <h4>You are not loggeg in</h4>
+    {% endif %}
 
 {% endblock content %}
