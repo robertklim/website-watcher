@@ -3,6 +3,9 @@ version: '3'
 services:
   web:
     build: .
+    environment:
+      - EMAIL_USER=app@mail.com
+      - EMAIL_PASSWORD=secret
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/src/website-watcher/
