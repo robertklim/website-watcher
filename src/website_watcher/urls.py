@@ -10,5 +10,5 @@ urlpatterns = [
     path('', WebsiteListView.as_view(), name='home'),
     path('websites/', include('websites.urls', namespace='websites')),
     path('watcher/', include('watcher.urls', namespace='watcher')),
-    path('accounts/', include(('django.contrib.auth.urls', 'accounts'), namespace='accounts')),
+    path('', include('django.contrib.auth.urls')),
 ]
