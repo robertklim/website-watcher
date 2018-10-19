@@ -26,21 +26,41 @@ class AccountProfileView(View):
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {})
 
-def account_edit(request):
-    if (request.method == 'POST'):
+class AccountUpdateView(View):
+    def get(self, request, *args, **kwargs):
+        usr_form = UserUpdateForm(instance=request.user)
+        prof_form = ProfileUpdateForm(instance=request.user.profile)
+
+        context = {
+            'usr_form': usr_form,
+            'prof_form': prof_form,
+        }
+
+        return render(request, 'accounts/account_update_form.html', context)
+
+    def post(self, request, *args, **kwargs):
         usr_form = UserUpdateForm(request.POST, instance=request.user)
         prof_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
         if usr_form.is_valid() and prof_form.is_valid():
             usr_form.save()
             prof_form.save()
             return redirect('accounts:account-profile')
-    else:
-        usr_form = UserUpdateForm(instance=request.user)
-        prof_form = ProfileUpdateForm(instance=request.user.profile)
 
-    context = {
-        'usr_form': usr_form,
-        'prof_form': prof_form,
-    }
+# def account_edit(request):
+#     if (request.method == 'POST'):
+#         usr_form = UserUpdateForm(request.POST, instance=request.user)
+#         prof_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+#         if usr_form.is_valid() and prof_form.is_valid():
+#             usr_form.save()
+#             prof_form.save()
+#             return redirect('accounts:account-profile')
+#     else:
+#         usr_form = UserUpdateForm(instance=request.user)
+#         prof_form = ProfileUpdateForm(instance=request.user.profile)
 
-    return render(request, 'accounts/account_update_form.html', context)
+#     context = {
+#         'usr_form': usr_form,
+#         'prof_form': prof_form,
+#     }
+
+#     return render(request, 'accounts/account_update_form.html', context)
