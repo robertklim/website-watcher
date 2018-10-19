@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="account">
+    <div class="card horizontal">
+        <div class="card-image">
+            <img src="">
+        </div>
+        <div class="card-stacked">
+            <div class="card-content">
+                <ul class="collection with-header">
+                    <li class="collection-header">
+                        <h5>Hi {{ user.profile.name }}!</h5>
+                    </li>
+                    <li class="collection-item">
+                        Username: {{ user.username }}
+                    </li>
+                    <li class="collection-item">
+                        Name: {{ user.profile.name }}
+                    </li>
+                    <li class="collection-item">
+                        Surname: {{ user.profile.surname }}
+                    </li>
+                    <li class="collection-item">
+                        E-mail: {{ user.email }}
+                    </li>
+                    <li class="collection-item">
+                        Phone number: {{ user.profile.phone_number }}
+                    </li>
+                </ul>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'password_change' %}">Change password</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
