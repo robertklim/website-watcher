@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+
+<form action="" method="POST">{% csrf_token %}
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Account edit form</span>
+            {{ usr_form.as_p }}
+            {{ prof_form.as_p }}
+            <br>
+            <button type="submit" class="btn-large waves-effect waves-light left">
+                <i class="material-icons left">save</i>
+                Save
+            </button>
+        </div>
+    </div>
+</form>
+
+{% endblock content %}
