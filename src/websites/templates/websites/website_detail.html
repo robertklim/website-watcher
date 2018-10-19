@@ -27,7 +27,7 @@
                     Edit
                     <i class="material-icons left">edit</i>
                 </a>
-                <a href="{{ object.get_absolute_url }}settings/" class="waves-effect waves-light btn">
+                <a href="{% url 'watcher:website-settings-list' website_pk=object.pk %}" class="waves-effect waves-light btn">
                     Settings
                     <i class="material-icons left">settings</i>
                 </a>

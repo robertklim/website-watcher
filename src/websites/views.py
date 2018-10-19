@@ -7,50 +7,8 @@ from django.views.generic import (
     ListView, 
     UpdateView,
 )
-from .forms import WebsiteCreateForm, WebsiteCheckSettingsCreateForm
-from .models import Website, WebsiteCheckSettings
-
-class WebsiteCheckSettingsListView(ListView):
-    pk_url_kwargs = 'website_pk'
-    def get_queryset(self):
-        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['website_pk'] = self.kwargs.get('website_pk')
-        return context
-
-class WebsiteCheckSettingsDetailView(DetailView):
-    def get_object(self):
-        return get_object_or_404(WebsiteCheckSettings, pk=self.kwargs.get('website_settings_pk'))
-
-class WebsiteCheckSettingsCreateView(CreateView):
-    form_class = WebsiteCheckSettingsCreateForm
-    template_name = 'websites/websitechecksettings_create.html'
-    pk_url_kwargs = 'website_pk'
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        # Now I can customize form
-        instance.website = Website.objects.get(pk=self.kwargs.get('website_pk'))
-        return super(WebsiteCheckSettingsCreateView, self).form_valid(form)
-
-class WebsiteCheckSettingsUpdateView(UpdateView):
-    form_class = WebsiteCheckSettingsCreateForm
-    template_name = 'websites/websitechecksettings_update.html'
-    pk_url_kwarg = 'website_settings_pk'
-
-    def get_queryset(self):
-        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
-
-class WebsiteCheckSettingsDeleteView(DeleteView):
-    model = WebsiteCheckSettings
-    pk_url_kwarg = 'website_settings_pk'
-    # success_url = reverse_lazy('websites:website-list')
-
-    def get_success_url(self):
-        website_pk = self.object.website.pk
-        return reverse_lazy('websites:website-settings-list', kwargs={'website_pk': website_pk})
+from .forms import WebsiteCreateForm
+from .models import Website
 
 class WebsiteListView(ListView):
     def get_queryset(self):

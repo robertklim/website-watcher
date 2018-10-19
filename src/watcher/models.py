@@ -1,5 +1,9 @@
 from django.db import models
-from websites.models import Website, WebsiteCheckSettings
+from django.urls import reverse
+
+from websites.models import Website
+
+from taggit.managers import TaggableManager
 
 CHECK_RESULTS = (
     ('OK', 'Ok'),
@@ -21,6 +25,20 @@ class Check(models.Model):
     class Meta:
         get_latest_by = 'timestamp'
         ordering = ['-timestamp']
+
+class WebsiteCheckSettings(models.Model):
+    website = models.ForeignKey(Website, on_delete=models.CASCADE)
+    website_hash = models.CharField(max_length=128)
+    dom_exclusions = TaggableManager(blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.website.name + ' settings'
+
+    def get_absolute_url(self):
+        website_check_settings = WebsiteCheckSettings.objects.get(pk=self.pk)
+        return reverse('watcher:website-settings-detail', kwargs={'website_pk': website_check_settings.website.pk, 'website_settings_pk': self.pk})
 
 class WebsiteCheck(models.Model):
     website_settings    = models.ForeignKey(WebsiteCheckSettings, on_delete=models.CASCADE, related_name='website_checks')

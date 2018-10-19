@@ -1,12 +1,67 @@
 from bs4 import BeautifulSoup
-from django.shortcuts import render, redirect
+
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 
 from websites.models import Website
 
-from .models import Check
+from .forms import WebsiteCheckSettingsCreateForm
+from .models import Check, WebsiteCheck, WebsiteCheckSettings
 
 import hashlib
 import requests
+
+
+class WebsiteCheckSettingsListView(ListView):
+    pk_url_kwargs = 'website_pk'
+
+    def get_queryset(self):
+        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['website_pk'] = self.kwargs.get('website_pk')
+        return context
+
+class WebsiteCheckSettingsDetailView(DetailView):
+    def get_object(self):
+        return get_object_or_404(WebsiteCheckSettings, pk=self.kwargs.get('website_settings_pk'))
+
+class WebsiteCheckSettingsCreateView(CreateView):
+    form_class = WebsiteCheckSettingsCreateForm
+    template_name = 'watcher/websitechecksettings_create.html'
+    pk_url_kwargs = 'website_pk'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        # Now I can customize form
+        instance.website = Website.objects.get(
+            pk=self.kwargs.get('website_pk'))
+        return super(WebsiteCheckSettingsCreateView, self).form_valid(form)
+
+class WebsiteCheckSettingsUpdateView(UpdateView):
+    form_class = WebsiteCheckSettingsCreateForm
+    template_name = 'watcher/websitechecksettings_update.html'
+    pk_url_kwarg = 'website_settings_pk'
+
+    def get_queryset(self):
+        return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
+
+class WebsiteCheckSettingsDeleteView(DeleteView):
+    model = WebsiteCheckSettings
+    pk_url_kwarg = 'website_settings_pk'
+    # success_url = reverse_lazy('websites:website-list')
+
+    def get_success_url(self):
+        website_pk = self.object.website.pk
+        return reverse_lazy('watcher:website-settings-list', kwargs={'website_pk': website_pk})
 
 def check_user_websites(request):
     user = request.user
