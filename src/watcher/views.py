@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
+    View,
     CreateView,
     DeleteView,
     DetailView,
@@ -62,6 +63,30 @@ class WebsiteCheckSettingsDeleteView(DeleteView):
     def get_success_url(self):
         website_pk = self.object.website.pk
         return reverse_lazy('watcher:website-settings-list', kwargs={'website_pk': website_pk})
+
+class WebsiteCheckSettingsGenerateHashView(View):
+    def get(self, request, website_pk, website_settings_pk):
+        website_pk = self.kwargs.get('website_pk')
+        website_settings_pk = self.kwargs.get('website_settings_pk')
+        website_check_settings = WebsiteCheckSettings.objects.get(pk=website_settings_pk)
+        website_url = website_check_settings.website.url
+
+        try:
+            source = requests.get(website_url).text
+        except requests.exceptions.RequestException as e:
+            print(e)
+            source = None
+
+        if source is not None:
+            soup = BeautifulSoup(source, 'lxml')
+            website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
+        else:
+            website_hash = ''
+
+        website_check_settings.website_hash = website_hash
+        website_check_settings.save()
+
+        return redirect('watcher:website-settings-detail', website_pk=website_pk, website_settings_pk=website_settings_pk)
 
 def check_user_websites(request):
     user = request.user
