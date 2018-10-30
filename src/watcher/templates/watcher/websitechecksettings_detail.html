@@ -31,4 +31,19 @@
     </div>
 </div>
 
+<div class="card horizontal">
+    <div class="card-stacked">
+        <div class="card-content">
+            <h6>Checks:</h6>
+            <ol class="collection with-header">
+            {% for check in checks %}
+                <li class="collection-item">
+                    <div>{{ check.timestamp }} - {{ check.check_hash }}<span class="secondary-content">{{ check.result }}</span></div>
+                </li>
+            {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}

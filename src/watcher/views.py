@@ -35,6 +35,11 @@ class WebsiteCheckSettingsDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(WebsiteCheckSettings, pk=self.kwargs.get('website_settings_pk'))
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['checks'] = WebsiteCheck.objects.filter(website_settings=self.kwargs.get('website_settings_pk'))
+        return context
+
 class WebsiteCheckSettingsCreateView(CreateView):
     form_class = WebsiteCheckSettingsCreateForm
     template_name = 'watcher/websitechecksettings_create.html'
