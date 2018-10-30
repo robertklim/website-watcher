@@ -114,13 +114,14 @@ class WebsiteCheckView(View):
         if source is not None:
             soup = BeautifulSoup(source, 'lxml')
             check_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
+            if website_hash == check_hash:
+                result = 'OK'
+            else:
+                result = 'ALERT'
         else:
             check_hash = ''
-
-        if website_hash == check_hash:
-            result = 'OK'
-        else:
-            result = 'ALERT'
+            result = 'ERROR'
+            error = 'NO CHECK HASH'
 
         WebsiteCheck.objects.create(
             website_settings=website_check_settings,
