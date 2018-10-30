@@ -84,6 +84,9 @@ class WebsiteCheckSettingsGenerateHashView(View):
 
         if source is not None:
             soup = BeautifulSoup(source, 'lxml')
+            for exclusion in website_check_settings.dom_exclusions.names():
+                for div in soup.find_all("div", {'class': exclusion}):
+                    div.decompose()
             website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
         else:
             website_hash = ''
@@ -113,6 +116,9 @@ class WebsiteCheckView(View):
 
         if source is not None:
             soup = BeautifulSoup(source, 'lxml')
+            for exclusion in website_check_settings.dom_exclusions.names():
+                for div in soup.find_all("div", {'class': exclusion}):
+                    div.decompose()
             check_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
             if website_hash == check_hash:
                 result = 'OK'
