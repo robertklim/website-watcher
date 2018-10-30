@@ -11,7 +11,7 @@
             DOM exclusions: {{ object.dom_exclusions.names }}
         </div>
         <div class="card-action">
-            <a href="{% url 'watcher:watcher-check' website_pk=object.website.pk %}" class="waves-effect waves-light btn">
+            <a href="{{ object.get_absolute_url }}check/" class="waves-effect waves-light btn">
                 Run Check
                 <i class="material-icons left">refresh</i>
             </a>

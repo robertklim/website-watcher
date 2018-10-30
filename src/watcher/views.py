@@ -88,6 +88,44 @@ class WebsiteCheckSettingsGenerateHashView(View):
 
         return redirect('watcher:website-settings-detail', website_pk=website_pk, website_settings_pk=website_settings_pk)
 
+class WebsiteCheckView(View):
+    def get(self, request, website_pk, website_settings_pk):
+        website_pk = self.kwargs.get('website_pk')
+        website_settings_pk = self.kwargs.get('website_settings_pk')
+        website_check_settings = WebsiteCheckSettings.objects.get(pk=website_settings_pk)
+        website_url = website_check_settings.website.url
+        website_hash = website_check_settings.website_hash
+        result = None
+        error = None
+
+        try:
+            source = requests.get(website_url).text
+        except requests.exceptions.RequestException as e:
+            print(e)
+            source = None
+            result = 'ERROR'
+            error = e
+
+        if source is not None:
+            soup = BeautifulSoup(source, 'lxml')
+            check_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
+        else:
+            check_hash = ''
+
+        if website_hash == check_hash:
+            result = 'OK'
+        else:
+            result = 'ALERT'
+
+        WebsiteCheck.objects.create(
+            website_settings=website_check_settings,
+            check_hash=check_hash,
+            result=result,
+            error=error,
+        ).save()
+
+        return redirect('watcher:website-settings-detail', website_pk=website_pk, website_settings_pk=website_settings_pk)
+
 def check_user_websites(request):
     user = request.user
     websites = Website.objects.filter(user=user)

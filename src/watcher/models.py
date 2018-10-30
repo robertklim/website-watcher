@@ -44,7 +44,7 @@ class WebsiteCheck(models.Model):
     website_settings    = models.ForeignKey(WebsiteCheckSettings, on_delete=models.CASCADE, related_name='website_checks')
     check_hash          = models.CharField(max_length=128)
     result              = models.CharField(max_length=128, choices=CHECK_RESULTS, blank=True)
-    error               = models.CharField(max_length=128, blank=True)
+    error               = models.CharField(max_length=128, blank=True, null=True)
     timestamp           = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -6,6 +6,7 @@ from .views import (
     WebsiteCheckSettingsGenerateHashView,
     WebsiteCheckSettingsListView,
     WebsiteCheckSettingsUpdateView,
+    WebsiteCheckView,
     check_website,
     check_user_websites,
 )
@@ -21,4 +22,5 @@ urlpatterns = [
     path('<int:website_pk>/settings/<int:website_settings_pk>/delete/', WebsiteCheckSettingsDeleteView.as_view(), name='website-settings-delete'),
     path('<int:website_pk>/settings/<int:website_settings_pk>/edit/', WebsiteCheckSettingsUpdateView.as_view(), name='website-settings-update'),
     path('<int:website_pk>/settings/<int:website_settings_pk>/hashgen/', WebsiteCheckSettingsGenerateHashView.as_view(), name='website-settings-generate-hash'),
+    path('<int:website_pk>/settings/<int:website_settings_pk>/check/', WebsiteCheckView.as_view(), name='website-check'),
 ]
