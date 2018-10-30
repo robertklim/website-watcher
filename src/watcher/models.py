@@ -48,7 +48,7 @@ class WebsiteCheck(models.Model):
     timestamp           = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.website_settings.website.name + ' check'
+        return self.website_settings.website.name + ' check ' + self.timestamp.strftime('(%d.%m.%Y %H:%m:%S)')
 
     class Meta:
         get_latest_by = 'timestamp'
