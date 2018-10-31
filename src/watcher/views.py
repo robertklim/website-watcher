@@ -17,8 +17,8 @@ from .forms import WebsiteCheckSettingsCreateForm
 from .models import Check, WebsiteCheck, WebsiteCheckSettings
 
 import hashlib
+import re
 import requests
-
 
 class WebsiteCheckSettingsListView(ListView):
     pk_url_kwargs = 'website_pk'
@@ -84,13 +84,33 @@ class WebsiteCheckSettingsGenerateHashView(View):
 
         if source is not None:
             soup = BeautifulSoup(source, 'lxml')
+            
+            # Set defaults
             html_element = 'div'
             html_attribute = 'class'
+            html_attribute_value = ''
             for exclusion in website_check_settings.dom_exclusions.names():
-                if exclusion[0] == '#':
+                # class found
+                if re.search('\.', exclusion) is not None:
+                    html_attribute = 'class'
+                # id found
+                if re.search('#', exclusion) is not None:
                     html_attribute = 'id'
-                for div in soup.find_all(html_element, {html_attribute: exclusion[1:]}):
-                    div.decompose()
+
+                # split exclusion to html_element part and html_attribute_value
+                exclusion_components = re.split('#|\.', exclusion)
+
+                # if no html element specified default to div
+                if exclusion_components[0] == '':
+                    html_element = 'div'
+                else:
+                    html_element = exclusion_components[0]
+
+                html_attribute_value = exclusion_components[1]
+
+                for element in soup.find_all(html_element, {html_attribute: html_attribute_value}):
+                    element.decompose()
+
             website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
         else:
             website_hash = ''
@@ -120,13 +140,33 @@ class WebsiteCheckView(View):
 
         if source is not None:
             soup = BeautifulSoup(source, 'lxml')
+            
+            # Set defaults
             html_element = 'div'
             html_attribute = 'class'
+            html_attribute_value = ''
             for exclusion in website_check_settings.dom_exclusions.names():
-                if exclusion[0] == '#':
+                # class found
+                if re.search('\.', exclusion) is not None:
+                    html_attribute = 'class'
+                # id found
+                if re.search('#', exclusion) is not None:
                     html_attribute = 'id'
-                for div in soup.find_all(html_element, {html_attribute: exclusion[1:]}):
-                    div.decompose()
+                
+                # split exclusion to html_element part and html_attribute_value
+                exclusion_components = re.split('#|\.', exclusion)
+                
+                # if no html element specified default to div
+                if exclusion_components[0] == '':
+                    html_element = 'div'
+                else:
+                    html_element = exclusion_components[0]
+
+                html_attribute_value = exclusion_components[1]
+
+                for element in soup.find_all(html_element, {html_attribute: html_attribute_value}):
+                    element.decompose()
+            
             check_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
             if website_hash == check_hash:
                 result = 'OK'
