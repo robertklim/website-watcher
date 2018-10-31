@@ -100,16 +100,20 @@ class WebsiteCheckSettingsGenerateHashView(View):
                 # split exclusion to html_element part and html_attribute_value
                 exclusion_components = re.split('#|\.', exclusion)
 
-                # if no html element specified default to div
-                if exclusion_components[0] == '':
-                    html_element = 'div'
-                else:
-                    html_element = exclusion_components[0]
-
-                html_attribute_value = exclusion_components[1]
+                # check number of components
+                if len(exclusion_components) < 2:
+                    html_attribute_value = exclusion_components[0]
+                elif len(exclusion_components) == 2:
+                    if exclusion_components[0] != '':
+                        html_element = exclusion_components[0]
+                    html_attribute_value = exclusion_components[1]
 
                 for element in soup.find_all(html_element, {html_attribute: html_attribute_value}):
                     element.decompose()
+                    # Reset defaults
+                    html_element = 'div'
+                    html_attribute = 'class'
+                    html_attribute_value = ''
 
             website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
         else:
@@ -155,17 +159,21 @@ class WebsiteCheckView(View):
                 
                 # split exclusion to html_element part and html_attribute_value
                 exclusion_components = re.split('#|\.', exclusion)
-                
-                # if no html element specified default to div
-                if exclusion_components[0] == '':
-                    html_element = 'div'
-                else:
-                    html_element = exclusion_components[0]
 
-                html_attribute_value = exclusion_components[1]
+                # check number of components
+                if len(exclusion_components) < 2:
+                    html_attribute_value = exclusion_components[0]
+                elif len(exclusion_components) == 2:
+                    if exclusion_components[0] != '':
+                        html_element = exclusion_components[0]
+                    html_attribute_value = exclusion_components[1]
 
                 for element in soup.find_all(html_element, {html_attribute: html_attribute_value}):
                     element.decompose()
+                    # Reset defaults
+                    html_element = 'div'
+                    html_attribute = 'class'
+                    html_attribute_value = ''
             
             check_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
             if website_hash == check_hash:
