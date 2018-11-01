@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card horizontal">
+    <div class="card-stacked">
+        <div class="card-content">
+            <h6>Checks:</h6>
+            <ol class="collection with-header">
+                {% for obj in object_list %}
+                <li class="collection-item">
+                    <div>{{ obj.timestamp }} - {{ obj.check_hash }}<span class="secondary-content">{{ obj.result }}</span></div>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
