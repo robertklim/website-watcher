@@ -5,6 +5,35 @@
 <div class="card horizontal">
     <div class="card-stacked">
         <div class="card-content">
+            <h5>Website settings detail</h5>
+            Website: <a href="">{{ website_check_settings.website }}</a><br>
+            Hash: {{ website_check_settings.website_hash }}<br>
+            DOM exclusions: {{ website_check_settings.dom_exclusions.names }}
+        </div>
+        <div class="card-action">
+            <a href="{{ website_check_settings.get_absolute_url }}check/" class="waves-effect waves-light btn">
+                Run Check
+                <i class="material-icons left">refresh</i>
+            </a>
+            <a href="{{ website_check_settings.get_absolute_url }}hashgen/" class="waves-effect waves-light btn">
+                Generate hash
+                <i class="material-icons left">autorenew</i>
+            </a>
+            <a href="{{ website_check_settings.get_absolute_url }}edit/" class="waves-effect waves-light btn">
+                Edit
+                <i class="material-icons left">edit</i>
+            </a>
+            <a href="{{ website_check_settings.get_absolute_url }}delete/" class="waves-effect waves-light btn red">
+                Delete
+                <i class="material-icons left">delete</i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card horizontal">
+    <div class="card-stacked">
+        <div class="card-content">
             <h6>Checks:</h6>
             <ol class="collection with-header">
                 {% for obj in object_list %}
