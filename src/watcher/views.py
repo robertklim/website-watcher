@@ -96,11 +96,16 @@ class WebsiteCheckSettingsGenerateHashView(View):
         if source is not None:
             soup = BeautifulSoup(source, 'lxml')
             
-            # Set defaults
-            html_element = 'div'
-            html_attribute = 'class'
-            html_attribute_value = ''
             for exclusion in website_check_settings.dom_exclusions.names():
+                # Set defaults
+                html_element = 'div'
+                html_attribute = 'class'
+                html_attribute_value = ''
+
+                regex = r'^[\w*]-?[_a-zA-Z]+[_a-zA-Z0-9-]*|[\W]-?[_a-zA-Z]+[_a-zA-Z0-9-]*'
+                test = re.findall(regex, exclusion)
+                print(exclusion)
+                print(test)
                 # class found
                 if re.search('\.', exclusion) is not None:
                     html_attribute = 'class'
@@ -121,10 +126,6 @@ class WebsiteCheckSettingsGenerateHashView(View):
 
                 for element in soup.find_all(html_element, {html_attribute: html_attribute_value}):
                     element.decompose()
-                    # Reset defaults
-                    html_element = 'div'
-                    html_attribute = 'class'
-                    html_attribute_value = ''
 
             website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
         else:
