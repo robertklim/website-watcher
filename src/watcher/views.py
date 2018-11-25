@@ -97,36 +97,13 @@ class WebsiteCheckSettingsGenerateHashView(View):
             soup = BeautifulSoup(source, 'lxml')
             
             for exclusion in website_check_settings.dom_exclusions.names():
-                # Set defaults
-                html_element = 'div'
-                html_attribute = 'class'
-                html_attribute_value = ''
+                # regex = r'^[\w*]-?[_a-zA-Z]+[_a-zA-Z0-9-]*|[\W]-?[_a-zA-Z]+[_a-zA-Z0-9-]*'
+                # test = re.findall(regex, exclusion)
+                # exclusion_components = re.findall(regex, exclusion)
 
-                regex = r'^[\w*]-?[_a-zA-Z]+[_a-zA-Z0-9-]*|[\W]-?[_a-zA-Z]+[_a-zA-Z0-9-]*'
-                test = re.findall(regex, exclusion)
-                print(exclusion)
-                print(test)
-                # class found
-                if re.search('\.', exclusion) is not None:
-                    html_attribute = 'class'
-                # id found
-                if re.search('#', exclusion) is not None:
-                    html_attribute = 'id'
-
-                # split exclusion to html_element part and html_attribute_value
-                exclusion_components = re.split('#|\.', exclusion)
-
-                # check number of components
-                if len(exclusion_components) < 2:
-                    html_attribute_value = exclusion_components[0]
-                elif len(exclusion_components) == 2:
-                    if exclusion_components[0] != '':
-                        html_element = exclusion_components[0]
-                    html_attribute_value = exclusion_components[1]
-
-                for element in soup.find_all(html_element, {html_attribute: html_attribute_value}):
+                for element in soup.select(exclusion):
                     element.decompose()
-
+                    
             website_hash = hashlib.md5(str(soup).encode('utf-8')).hexdigest()
         else:
             website_hash = ''
