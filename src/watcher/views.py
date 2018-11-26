@@ -29,6 +29,7 @@ class WebsiteCheckSettingsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['website_pk'] = self.kwargs.get('website_pk')
+        context['website'] = Website.objects.get(pk=context['website_pk'])
         return context
 
 class WebsiteCheckSettingsDetailView(DetailView):

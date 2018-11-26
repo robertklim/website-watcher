@@ -17,4 +17,4 @@ class Website(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('websites:website-detail', kwargs={'pk': self.pk})
+        return reverse('websites:website-detail', kwargs={'website_pk': self.pk})

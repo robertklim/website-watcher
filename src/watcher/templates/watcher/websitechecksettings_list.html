@@ -2,9 +2,37 @@
 
 {% block content %}
 
+<div class="card horizontal">
+    <div class="card-stacked">
+        <div class="card-content">
+            <h5>{{ website.name }}</h5>
+            <p>Url: {{ website.url }}</p>
+            <p>Description: {{ website.description }}</p>
+        </div>
+        <div class="card-action">
+            <a href="{% url 'watcher:watcher-check' website_pk=website.pk %}" class="waves-effect waves-light btn">
+                Run Check
+                <i class="material-icons left">refresh</i>
+            </a>
+            <a href="{{ website.get_absolute_url }}edit/" class="waves-effect waves-light btn">
+                Edit
+                <i class="material-icons left">edit</i>
+            </a>
+            <a href="{% url 'watcher:website-settings-list' website_pk=website.pk %}" class="waves-effect waves-light btn">
+                Settings
+                <i class="material-icons left">settings</i>
+            </a>
+            <a href="{{ website.get_absolute_url }}delete/" class="waves-effect waves-light btn red">
+                Delete
+                <i class="material-icons left">delete</i>
+            </a>
+        </div>
+    </div>
+</div>
+
 <ul class="collection with-header">
     <li class="collection-header">
-        <h4>Websites settings:</h4>
+        <h5>Check setups:</h5>
     </li>
     {% for obj in object_list %}
     <li class="collection-item">

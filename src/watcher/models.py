@@ -27,7 +27,7 @@ class Check(models.Model):
         ordering = ['-timestamp']
 
 class WebsiteCheckSettings(models.Model):
-    website = models.ForeignKey(Website, on_delete=models.CASCADE)
+    website = models.ForeignKey(Website, on_delete=models.CASCADE, related_name='website_check_settings')
     website_hash = models.CharField(max_length=128)
     dom_exclusions = TaggableManager(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

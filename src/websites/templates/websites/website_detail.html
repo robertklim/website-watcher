@@ -8,10 +8,11 @@
                 <h5>{{ object.name }}</h5>
                 <p>Url: {{ object.url }}</p>
                 <p>Description: {{ object.description }}</p>
+                {{ object.website_check_settings.all }}
                 <table>
-                    {% for check in object.checks.all %}
+                    {% for check in object.website_check_settings.website_checks.all %}
                         <tr>
-                            <td>{{ check.website_url }}</td>
+                            <td>{{ check.check_hash }}</td>
                             <td>{{ check.timestamp }}</td>
                             <td>{{ check.result }}</td>
                         </tr>
