@@ -48,4 +48,8 @@
     <i class="material-icons left">add_circle</i>
 </a>
 
+{% if is_paginated %}
+    {% include 'snippets/pagination.html' %}
+{% endif %}
+
 {% endblock content %}

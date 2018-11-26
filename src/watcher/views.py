@@ -22,6 +22,7 @@ import requests
 
 class WebsiteCheckSettingsListView(ListView):
     pk_url_kwargs = 'website_pk'
+    paginate_by = 5
 
     def get_queryset(self):
         return WebsiteCheckSettings.objects.filter(website=self.kwargs.get('website_pk'))
@@ -71,7 +72,7 @@ class WebsiteCheckSettingsDeleteView(DeleteView):
         return reverse_lazy('watcher:website-settings-list', kwargs={'website_pk': website_pk})
 
 class WebsiteCheckListView(ListView):
-    paginate_by = 6
+    paginate_by = 10
 
     def get_queryset(self):
         return WebsiteCheck.objects.filter(website_settings=self.kwargs.get('website_settings_pk'))
